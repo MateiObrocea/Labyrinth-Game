@@ -3,7 +3,7 @@ import sys
 from exercise.helpers.keyboard_handler import KeyboardHandler
 from exercise.maze import Maze
 from exercise.helpers.constants import Constants
-from exercise.search import Search
+# from exercise.search import Search
 from CameraDetection import CameraDetection
 from player import Player
 from enemy import Enemy
@@ -24,7 +24,7 @@ class Game:
         self.chaser = Enemy(0, 0, (Constants.CELL_SIZE, Constants.CELL_SIZE), self.maze)
 
         self.star_list = []
-        self.star_list.append(Star(Constants.GRID_COLS // 2, 13, (Constants.CELL_SIZE, Constants.CELL_SIZE)))
+        self.star_list.append(Star(Constants.GRID_COLS // 2, 12, (Constants.CELL_SIZE, Constants.CELL_SIZE)))
         self.star_list.append(Star(3, 9, (Constants.CELL_SIZE, Constants.CELL_SIZE)))
         self.star_list.append(Star(13, 9, (Constants.CELL_SIZE, Constants.CELL_SIZE)))
         self.star_list.append(Star(5, 3, (Constants.CELL_SIZE, Constants.CELL_SIZE)))
@@ -34,13 +34,15 @@ class Game:
         self.keyboard_handler = KeyboardHandler()
         self.font = pygame.font.SysFont(pygame.font.get_fonts()[0], 64)
         self.time = pygame.time.get_ticks()
+        self.last_move_time = pygame.time.get_ticks()
+
         self.maze.generate_obstacles()
         # self.search = Search(self.maze)
         # self.player_x = 0
         # self.player_y = 0
         # self.target_x = 12
         # self.target_y = 12
-        self.last_move_time = pygame.time.get_ticks()
+
         self.user_interface = UI()
         self.camera = CameraDetection()
 
@@ -56,22 +58,26 @@ class Game:
             if not self.star_list[i].is_collected:
                 return False
         return True
+
     def game_loop(self):
-        current_time = pygame.time.get_ticks()
-        delta_time = current_time - self.time
-        self.time = current_time
+        # self.user_interface.spawn(self.screen, 170, 150, 3000)
+        # current_time = pygame.time.get_ticks()
+        # delta_time = current_time - self.time
+        # self.time = current_time
         self.handle_events()
-        self.update_game()
+        self.update_game(Constants.PLAYER_SPEED, Constants.ENEMY_SPEED)
         self.draw_components()
         self.maze.set_target(self.maze.grid[self.player.position_x][self.player.position_y])
         # self.maze.set_target(self.maze.grid[self.player_x//self.player.size[0]][self.player_y//self.player.size[1]])
         self.maze.set_source(self.maze.grid[self.chaser.position_x][self.chaser.position_y])
         # self.search.a_star_search()
         # print(self.last_move_time)
+        self.user_interface.spawn(self.screen, 170, 150, 3000, self.game_exit())
         self.camera.perform()
 
         for star in self.star_list:
             star.get_collected(self.player.position_x, self.player.position_y)
+
         # self.screen.fill([255, 255, 255])
 
         # pygame.display.flip()
@@ -93,16 +99,16 @@ class Game:
     and objects from frame to frame.
     """
 
-    def update_game(self):
+    def update_game(self, player_speed, enemy_speed):
         # triggers the movement of the target at a certain speed
         # triggers the movement of the target at a certain speed
         current_time = pygame.time.get_ticks()
         self.chaser.seek_player()
-        if current_time - self.last_move_time > 100:
+        if current_time - self.time > enemy_speed:  # current time - self time
             # self.move_target()
             self.chaser.move(self.camera.direction)
             self.move_player()
-            self.last_move_time = current_time
+            self.time = current_time
 
 
     def move_player(self):
@@ -129,13 +135,13 @@ class Game:
     updates in method 'update'
     """
 
-    def move_target(self):
-        # moves the target towards the player
-        path = self.search.get_path()
-        if path:
-            for node in path:
-                self.player_x = node[0]
-                self.player_y = node[1]
+    # def move_target(self):
+    #     # moves the target towards the player
+    #     path = self.search.get_path()
+    #     if path:
+    #         for node in path:
+    #             self.player_x = node[0]
+    #             self.player_y = node[1]
 
     def draw_components(self):
         self.screen.fill([255, 255, 255])
@@ -147,12 +153,12 @@ class Game:
         self.player.draw_sprite(self.screen)
         self.chaser.draw_sprite(self.screen)
 
-        self.user_interface.render_end(self.screen, 170, 150)
+        self.user_interface.render_end(self.screen, 170, 150, self.game_exit())
         pygame.display.flip()
 
-    def draw_score(self):
-        text = self.font.render(str(self.maze.target.distance), True, (0, 0, 0))
-        self.screen.blit(text, (self.size[0] / 2 - 64, 20))
+    # def draw_score(self):
+    #     text = self.font.render(str(self.maze.target.distance), True, (0, 0, 0))
+    #     self.screen.blit(text, (self.size[0] / 2 - 64, 20))
 
     def reset(self):
         pass
@@ -259,11 +265,13 @@ gameExit = False
 if __name__ == "__main__":
     game = Game()
     while not gameExit:
-
         if game.game_exit():
             gameExit = True
-
         game.game_loop()
+
+
+
+
         # pygame.draw.rect(pygame.display.set_mode([800, 800]), (0, 255, 255),
         #                  [10, 10, 2, 2])
         # pygame.display.update()

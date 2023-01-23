@@ -34,3 +34,5 @@ class Enemy(Agent):
 
     def seek_player(self):
         self.search.a_star_search()
+
+
