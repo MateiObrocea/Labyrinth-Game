@@ -9,86 +9,85 @@ import bisect
 import sys
 
 
-
 class Search:
 
     def __init__(self, graph):
         self.graph = graph
-    def breadth_first_solution(self):
-
-        self.graph.reset_state()
-
-        queue = [self.graph.start]
-        visited = []
-
-        while len(queue) > 0:
-            current_node = queue.pop(0)
-            if current_node != self.graph.target:
-                if current_node not in visited:
-                    visited.append(current_node)
-                    neighbours = current_node.get_neighbours()
-                    random.shuffle(neighbours)
-                    for next_node in neighbours:
-                        if next_node not in visited:
-                            next_node.set_parent(current_node)
-                            queue.append(next_node)
-            else:
-                break
-        print("The number of visited nodes is: {}".format(len(visited)))
-        self.highlight_path()
-
-    def depth_first_solution(self):
-
-        self.graph.reset_state()
-
-        stack = [self.graph.start]
-        visited = []
-
-        while len(stack) > 0:
-            current_node = stack.pop()
-            if current_node != self.graph.target:
-                if current_node not in visited:
-                    visited.append(current_node)
-                    neighbours = current_node.get_neighbours()
-                    # random.shuffle(neighbours)
-                    for next_node in neighbours:
-                        if next_node not in visited:
-                            next_node.set_parent(current_node)
-                            stack.append(next_node)
-            else:
-                break
-        print("The number of visited nodes is: {}".format(len(visited)))
-        self.highlight_path()
-
-    # ADD YOU IMPLEMENTATIONS FOR GREEDY AND ASTAR HERE!
-    def greedy_search(self):
-        self.graph.reset_state()
-
-        queue = [self.graph.start]
-        visited = []
-
-        while len(queue) > 0:
-            current_node = queue.pop(0)
-            if current_node != self.graph.target:
-                if current_node not in visited:
-                    visited.append(current_node)
-                    neighbours = current_node.get_neighbours()
-                    for next_node in neighbours:
-                        if next_node not in visited:
-                            next_node.set_parent(current_node)
-                            score = self.graph.target.manhattan_distance(next_node)
-                            next_node.set_score(score)
-                            bisect.insort_left(queue, next_node)
-            else:
-                break
-        print("The number of visited nodes is: {}".format(len(visited)))
-        self.highlight_path()
+    # def breadth_first_solution(self):
+    #
+    #     self.graph.reset_state()
+    #
+    #     queue = [self.graph.start]
+    #     visited = []
+    #
+    #     while len(queue) > 0:
+    #         current_node = queue.pop(0)
+    #         if current_node != self.graph.target:
+    #             if current_node not in visited:
+    #                 visited.append(current_node)
+    #                 neighbours = current_node.get_neighbours()
+    #                 random.shuffle(neighbours)
+    #                 for next_node in neighbours:
+    #                     if next_node not in visited:
+    #                         next_node.set_parent(current_node)
+    #                         queue.append(next_node)
+    #         else:
+    #             break
+    #     print("The number of visited nodes is: {}".format(len(visited)))
+    #     self.highlight_path()
+    #
+    # def depth_first_solution(self):
+    #
+    #     self.graph.reset_state()
+    #
+    #     stack = [self.graph.start]
+    #     visited = []
+    #
+    #     while len(stack) > 0:
+    #         current_node = stack.pop()
+    #         if current_node != self.graph.target:
+    #             if current_node not in visited:
+    #                 visited.append(current_node)
+    #                 neighbours = current_node.get_neighbours()
+    #                 # random.shuffle(neighbours)
+    #                 for next_node in neighbours:
+    #                     if next_node not in visited:
+    #                         next_node.set_parent(current_node)
+    #                         stack.append(next_node)
+    #         else:
+    #             break
+    #     print("The number of visited nodes is: {}".format(len(visited)))
+    #     self.highlight_path()
+    #
+    # # ADD YOU IMPLEMENTATIONS FOR GREEDY AND ASTAR HERE!
+    # def greedy_search(self):
+    #     self.graph.reset_state()
+    #
+    #     queue = [self.graph.start]
+    #     visited = []
+    #
+    #     while len(queue) > 0:
+    #         current_node = queue.pop(0)
+    #         if current_node != self.graph.target:
+    #             if current_node not in visited:
+    #                 visited.append(current_node)
+    #                 neighbours = current_node.get_neighbours()
+    #                 for next_node in neighbours:
+    #                     if next_node not in visited:
+    #                         next_node.set_parent(current_node)
+    #                         score = self.graph.target.manhattan_distance(next_node)
+    #                         next_node.set_score(score)
+    #                         bisect.insort_left(queue, next_node)
+    #         else:
+    #             break
+    #     print("The number of visited nodes is: {}".format(len(visited)))
+    #     self.highlight_path()
 
     def a_star_search(self):
         self.graph.reset_state()
         queue = [self.graph.start]
         visited = []
-
+        self.highlight_path()
         while len(queue) > 0:
             current_node = queue.pop(0)
             if current_node != self.graph.target:

@@ -12,7 +12,8 @@ import math
 class CameraDetection:
 
     def __init__(self):
-        self.direction = 10 # random nr outside the direction
+        self.direction = 10  # random nr outside the direction
+
     def distance(self, x1, y1, x2, y2):
         """
         Calculate distance between two points
@@ -126,23 +127,25 @@ class CameraDetection:
                         # except:
                         #     print("conversion error"
                     if 45 < angle_final < 135:
-                        print("up")
-                        self.direction = 2
-                    elif 135 < angle_final < 225:
-                        print("right")
+                        print("North")
                         self.direction = 0
-                    elif 225 < angle_final < 315:
-                        print("down")
-                        self.direction = 3
-                    else:
-                        print("left")
+                    elif 135 < angle_final < 225:
+                        print("East")
                         self.direction = 1
+                    elif 225 < angle_final < 315:
+                        print("South")
+                        self.direction = 2
+                    else:
+                        print("West")
+                        self.direction = 3
 
-                    print(self.direction)
+                    # print(self.direction)
 
                     # CHANGE FONT HERE
                     cv2.putText(copy_frame, angle_text, (color1_x - 30, color1_y), cv2.FONT_HERSHEY_COMPLEX, 1,
                                 (0, 128, 229), 2)
+        else:
+            self.direction = 10
 
         # cv2.imshow('mat', copy_frame)
         cv2.waitKey(5)

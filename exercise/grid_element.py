@@ -1,3 +1,5 @@
+from random import uniform
+
 from pygame import draw, font
 
 import sys
@@ -18,7 +20,8 @@ class GridElement:
         self.parent = None
         self.distance = None
         self.score = None
-        self.color = (255, 255, 255)
+        self.color = (255, 255, 0)
+        self.init_color = (uniform(50, 100), uniform(200, 255), 0)
 
     """
     Overload the equals operator
@@ -50,6 +53,7 @@ class GridElement:
     """
 
     def reset_neighbours(self):
+        pass
         self.neighbours = []
 
     """
@@ -60,7 +64,7 @@ class GridElement:
         self.parent = None
         self.score = None
         self.distance = None
-        self.color = (255, 255, 255)
+        self.color = self.init_color
 
     def get_neighbours(self):
         return self.neighbours[:]
@@ -105,7 +109,7 @@ class GridElement:
     def set_parent(self, parent):
         self.parent = parent
         if parent.distance is not None:
-            self.distance = parent.distance+1
+            self.distance = parent.distance + 1
 
     def set_color(self, color):
         self.color = color
@@ -126,37 +130,37 @@ class GridElement:
 
         for direction in compass:
             if direction == (0, -1):  # North
-                draw.line(surface, (0, 0, 0), (self.position[0] * self.size[0], self.position[1] * self.size[1]),
-                          ((self.position[0] + 1) * self.size[0], self.position[1] * self.size[1]), 4)
+                draw.line(surface, (120, 80, 0), (self.position[0] * self.size[0], self.position[1] * self.size[1]),
+                          ((self.position[0] + 1) * self.size[0], self.position[1] * self.size[1]), 8)
             if direction == (1, 0):  # East
-                draw.line(surface, (0, 0, 0), ((self.position[0] + 1) * self.size[0], self.position[1] * self.size[1]),
-                          ((self.position[0] + 1) * self.size[0], (self.position[1] + 1) * self.size[1]), 2)
+                draw.line(surface, (120, 80, 0), ((self.position[0] + 1) * self.size[0], self.position[1] * self.size[1]),
+                          ((self.position[0] + 1) * self.size[0], (self.position[1] + 1) * self.size[1]), 8)
             if direction == (0, 1):  # South
-                draw.line(surface, (0, 0, 0), (self.position[0] * self.size[0], (self.position[1] + 1) * self.size[1]),
-                          ((self.position[0] + 1) * self.size[0], (self.position[1] + 1) * self.size[1]), 2)
+                draw.line(surface, (120, 80, 0), (self.position[0] * self.size[0], (self.position[1] + 1) * self.size[1]),
+                          ((self.position[0] + 1) * self.size[0], (self.position[1] + 1) * self.size[1]), 8)
             if direction == (-1, 0):  # West
-                draw.line(surface, (0, 0, 0), (self.position[0] * self.size[0], self.position[1] * self.size[1]),
-                          (self.position[0] * self.size[0], (self.position[1] + 1) * self.size[1]), 2)
+                draw.line(surface, (120, 80, 0), (self.position[0] * self.size[0], self.position[1] * self.size[1]),
+                          (self.position[0] * self.size[0], (self.position[1] + 1) * self.size[1]), 8)
 
         # This draw an arrow to from the parent
-        if self.parent is not None:
-
-            vector = self.direction(self.parent)
-
-            center = ((self.position[0]+0.5) * self.size[0],(self.position[1]+0.5) * self.size[1])
-
-            if vector[0] != 0:
-                left_point = (center[0]+(vector[0]-vector[1])*self.size[0]/5,center[1]+(vector[1]-vector[0])*self.size[0]/5)
-                right_point = (center[0] + (vector[0] - vector[1]) * self.size[0] / 5, center[1] + (vector[1] + vector[0]) * self.size[0] / 5)
-            else:
-                left_point = (center[0] + (vector[0] - vector[1]) * self.size[0] / 5,
-                              center[1] + (vector[1] + vector[0]) * self.size[0] / 5)
-                right_point = (center[0] + (vector[0] + vector[1]) * self.size[0] / 5,
-                               center[1] + (vector[1] + vector[0]) * self.size[0] / 5)
-            draw.polygon(surface, (100,100,100),(center,left_point,right_point))
-            entry_point= (center[0]+vector[0]*self.size[0]/2,center[1]+vector[1]*self.size[1]/2)
-            end_point = (center[0] + vector[0] * self.size[0] / 5, center[1] + vector[1] * self.size[1] / 5)
-            draw.line(surface, (100,100,100),end_point,entry_point,int(self.size[0]/20)+1)
+        # if self.parent is not None:
+        #
+        #     vector = self.direction(self.parent)
+        #
+        #     center = ((self.position[0]+0.5) * self.size[0],(self.position[1]+0.5) * self.size[1])
+        #
+        #     if vector[0] != 0:
+        #         left_point = (center[0]+(vector[0]-vector[1])*self.size[0]/5,center[1]+(vector[1]-vector[0])*self.size[0]/5)
+        #         right_point = (center[0] + (vector[0] - vector[1]) * self.size[0] / 5, center[1] + (vector[1] + vector[0]) * self.size[0] / 5)
+        #     else:
+        #         left_point = (center[0] + (vector[0] - vector[1]) * self.size[0] / 5,
+        #                       center[1] + (vector[1] + vector[0]) * self.size[0] / 5)
+        #         right_point = (center[0] + (vector[0] + vector[1]) * self.size[0] / 5,
+        #                        center[1] + (vector[1] + vector[0]) * self.size[0] / 5)
+        #     draw.polygon(surface, (100,100,100),(center,left_point,right_point))
+        #     entry_point= (center[0]+vector[0]*self.size[0]/2,center[1]+vector[1]*self.size[1]/2)
+        #     end_point = (center[0] + vector[0] * self.size[0] / 5, center[1] + vector[1] * self.size[1] / 5)
+        #     draw.line(surface, (100,100,100),end_point,entry_point,int(self.size[0]/20)+1)
 
 
     def print_neighbours(self):
