@@ -14,12 +14,6 @@ class Agent:
         self.previous_y = y
         self.angle = 0
 
-    def render_agent(self, surface):
-        pygame.draw.rect(surface, (255, 255, 255),
-                  (self.position_x * self.size[0] + 4, self.position_y * self.size[1] + 4, self.size[0] - 8, self.size[1] - 8), 0)
-        # draw.rect(surface, (255, 255, 255),
-        #           (100, 100, 20, 20), 0)
-
     def draw_sprite(self, surface):
         self.counter += 1
         self.angle = self.calculate_direction()

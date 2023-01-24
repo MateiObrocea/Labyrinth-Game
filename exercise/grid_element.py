@@ -2,7 +2,6 @@ from random import uniform
 
 from pygame import draw, font
 
-import sys
 
 class GridElement:
     """
@@ -20,15 +19,10 @@ class GridElement:
         self.parent = None
         self.distance = None
         self.score = None
-        self.color = (255, 255, 0)
         self.init_color = (uniform(25, 100), uniform(135, 205), 0)
+        self.wall_color = (120, 80, 0)
+        self.set_color(self.init_color)
 
-    """
-    Overload the equals operator
-    """
-
-    # # def __eq__(self, other):
-    # #     return self.position == other.position
     """
     Overload the less than operator
     """
@@ -36,17 +30,6 @@ class GridElement:
     def __lt__(self, other):
         return (self.score is not None) and (other.score is None or self.score < other.score)
 
-    """
-       Overload the hash operator
-    """
-    def __hash__(self):
-        return hash(self.position)
-    """
-    Overload the string representation of the object
-    """
-
-    def __repr__(self):
-        return "[%s, %s]" % (self.position, self.score)
 
     """
     Remove all neighbours
@@ -54,7 +37,7 @@ class GridElement:
 
     def reset_neighbours(self):
         pass
-        self.neighbours = []
+        # self.neighbours = []
 
     """
     Sets the state of the GridElement 
@@ -64,7 +47,7 @@ class GridElement:
         self.parent = None
         self.score = None
         self.distance = None
-        self.color = self.init_color
+        self.set_color(self.init_color)
 
     def get_neighbours(self):
         return self.neighbours[:]
@@ -79,10 +62,6 @@ class GridElement:
         y_distance = abs(self.position[1] - other.position[1])
         return x_distance + y_distance
 
-    def null_distance(self, other):
-        x_distance = abs(self.position[0] - other.position[0])
-        y_distance = abs(self.position[1] - other.position[1])
-        return max(x_distance, y_distance)
 
     def direction(self, other):
         return other.position[0] - self.position[0], other.position[1] - self.position[1]
@@ -95,12 +74,6 @@ class GridElement:
 
     def get_distance(self):
         return self.distance
-
-    def get_score(self):
-        return self.score
-
-    def get_position(self):
-        return self.position
 
     """
     Assign the GridElement used to reach this GridElement
@@ -130,16 +103,16 @@ class GridElement:
 
         for direction in compass:
             if direction == (0, -1):  # North
-                draw.line(surface, (120, 80, 0), (self.position[0] * self.size[0], self.position[1] * self.size[1]),
+                draw.line(surface, self.wall_color, (self.position[0] * self.size[0], self.position[1] * self.size[1]),
                           ((self.position[0] + 1) * self.size[0], self.position[1] * self.size[1]), 8)
             if direction == (1, 0):  # East
-                draw.line(surface, (120, 80, 0), ((self.position[0] + 1) * self.size[0], self.position[1] * self.size[1]),
+                draw.line(surface, self.wall_color, ((self.position[0] + 1) * self.size[0], self.position[1] * self.size[1]),
                           ((self.position[0] + 1) * self.size[0], (self.position[1] + 1) * self.size[1]), 8)
             if direction == (0, 1):  # South
-                draw.line(surface, (120, 80, 0), (self.position[0] * self.size[0], (self.position[1] + 1) * self.size[1]),
+                draw.line(surface, self.wall_color, (self.position[0] * self.size[0], (self.position[1] + 1) * self.size[1]),
                           ((self.position[0] + 1) * self.size[0], (self.position[1] + 1) * self.size[1]), 8)
             if direction == (-1, 0):  # West
-                draw.line(surface, (120, 80, 0), (self.position[0] * self.size[0], self.position[1] * self.size[1]),
+                draw.line(surface, self.wall_color, (self.position[0] * self.size[0], self.position[1] * self.size[1]),
                           (self.position[0] * self.size[0], (self.position[1] + 1) * self.size[1]), 8)
 
         # This draw an arrow to from the parent
@@ -163,31 +136,3 @@ class GridElement:
         #     draw.line(surface, (100,100,100),end_point,entry_point,int(self.size[0]/20)+1)
 
 
-    def print_neighbours(self):
-        directions = []
-        for neighbor in self.neighbours:
-            if self.direction(neighbor) == (0, -1):  # North
-                directions.append("North")
-            elif self.direction(neighbor) == (1, 0):  # East
-                directions.append("East")
-            elif self.direction(neighbor) == (0, 1):  # South
-                directions.append("South")
-            elif self.direction(neighbor) == (-1, 0):  # West
-                directions.append("West")
-            else:
-                directions.append(self.direction(neighbor))
-
-        print(directions)
-        return None
-
-    def print_walls(self):
-        # discard the directions where neighbours are
-        compass = {(0, -1): "North",
-                   (1, 0): "East",
-                   (0, 1): "South",
-                   (-1, 0): "West"}  # The four directions
-        for neighbor in self.neighbours:
-            compass.pop(self.direction(neighbor))
-
-        print(list(compass.values()))
-        return None

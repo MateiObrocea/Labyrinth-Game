@@ -11,7 +11,6 @@ class Player(Agent):
             self.sprites.append(image.load(f"helpers/Images/bird_{i+1}.png"))
         self.sprite_animation_speed = 4
 
-
     def move(self, direction):
         if direction == 0:
             self.position_y = self.position_y - 1

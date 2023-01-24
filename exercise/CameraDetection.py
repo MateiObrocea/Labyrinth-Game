@@ -89,8 +89,8 @@ class CameraDetection:
         (color2_x, color2_y), found_color2 = self.find_color2(copy_frame)
 
         # draw circles around these objects
-        cv2.circle(copy_frame, (color1_x, color1_y), 20, (255, 0, 0), -1)
-        cv2.circle(copy_frame, (color2_x, color2_y), 20, (0, 128, 255), -1)
+        # cv2.circle(copy_frame, (color1_x, color1_y), 20, (255, 0, 0), -1)
+        # cv2.circle(copy_frame, (color2_x, color2_y), 20, (0, 128, 255), -1)
 
         if found_color2 and found_color1:
             # trig stuff to get the line

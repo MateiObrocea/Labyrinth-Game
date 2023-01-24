@@ -9,6 +9,7 @@ from enemy import Enemy
 from star import Star
 from ui import UI
 
+
 class Game:
     """
     Initialize PyGame and create a graphical surface to write. Similar
@@ -67,27 +68,12 @@ class Game:
         self.draw_components()
         self.maze.set_target(self.maze.grid[self.player.position_x][self.player.position_y])
         self.maze.set_source(self.maze.grid[self.chaser.position_x][self.chaser.position_y])
-        # self.user_interface.spawn(self.screen, 170, 150, 3000, self.game_exit())
         self.camera.perform()
 
         for star in self.star_list:
             star.get_collected(self.player.position_x, self.player.position_y)
 
-        # self.screen.fill([255, 255, 255])
 
-        # pygame.display.flip()
-
-        # pygame.display.flip()
-
-        # for neighbor in self.maze.grid.neighbours:
-        #     if self.maze.direction(neighbor) == (0, -1):  # North
-        #         self.player_y = self.player_y - 1
-        #     elif self.maze.grid.direction(neighbor) == (1, 0):  # East
-        #         self.player_x = self.player_x + 1
-        #     elif self.maze.grid.direction(neighbor) == (0, 1):  # South
-        #         self.player_y = self.player_y + 1
-        #     elif self.maze.grid.direction(neighbor) == (-1, 0):  # West
-        #         self.player_x = self.player_x - 1
 
     """
     Method 'update_game' is there to update the state of variables 
@@ -96,16 +82,13 @@ class Game:
 
     def update_game(self, player_speed, enemy_speed):
         # triggers the movement of the target at a certain speed
-        # triggers the movement of the target at a certain speed
         current_time = pygame.time.get_ticks()
         self.chaser.seek_player()
         if current_time - self.time > enemy_speed:  # current time - self time
-            # self.move_target()
             self.chaser.move(self.camera.direction)
             self.time = current_time
 
         if current_time - self.time_player > player_speed:  # current time - self time
-            # self.move_target()
             self.move_player()
             self.time_player = current_time
 
