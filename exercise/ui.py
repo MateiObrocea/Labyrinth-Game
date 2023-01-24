@@ -48,7 +48,7 @@ class UI:
                 # after a certain threshold the animation stops and the program exits
                 self.background_song.stop()
                 self.meow.play()
-                time.delay(2000) # adds a delay before exiting the game
+                time.delay(2000)  # adds a delay before exiting the game
                 self.end_game = True
 
     def render_you_win(self, surface, x, y, condition):

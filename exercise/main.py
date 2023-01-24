@@ -4,9 +4,8 @@
     The player controls the bird with an arrow via the OpenCv library, such that the bird moves in the arrow direction
     The cat chases the bird
     Built upon the backbone of week 6 search assignment
-    Authors: M.Obrocea and D.Yokubova
+    Authors: Matei Obrocea and Sade Yokubova
     24 - 01 - 2023
-
 """
 
 import pygame
