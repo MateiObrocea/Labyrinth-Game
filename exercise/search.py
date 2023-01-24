@@ -2,10 +2,14 @@ import bisect
 
 
 class Search:
+    """
+    Class which computes the movement algorithm of the chaser
+    When the path becomes short enough, the game is lost
+    """
 
     def __init__(self, graph):
         self.graph = graph
-        self.get_caught_condition = False
+        self.get_caught_condition = False # sets the condition for losing the game
 
     def a_star_search(self):
         self.graph.reset_state()
@@ -36,11 +40,9 @@ class Search:
 
             else:
                 break
-        # print("The number of visited nodes is: {}".format(len(visited)))
 
         if len(visited) <= 1:
             self.get_caught_condition = True
-            # print(self.get_caught_condition)
 
         # self.highlight_path()
 

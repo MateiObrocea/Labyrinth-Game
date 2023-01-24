@@ -1,15 +1,11 @@
 from random import uniform
 
-from pygame import draw, font
+from pygame import draw
 
 
 class GridElement:
     """
-    GridElement used as a tile in the exercise
-    """
-
-    """
-    Initialise the GridElement and assign the starting values
+    GridElement used as a tile in the maze
     """
 
     def __init__(self, x, y, size):
@@ -30,14 +26,13 @@ class GridElement:
     def __lt__(self, other):
         return (self.score is not None) and (other.score is None or self.score < other.score)
 
-
     """
     Remove all neighbours
     """
 
     def reset_neighbours(self):
         pass
-        # self.neighbours = []
+        self.neighbours = []
 
     """
     Sets the state of the GridElement 
@@ -61,7 +56,6 @@ class GridElement:
         x_distance = abs(self.position[0] - other.position[0])
         y_distance = abs(self.position[1] - other.position[1])
         return x_distance + y_distance
-
 
     def direction(self, other):
         return other.position[0] - self.position[0], other.position[1] - self.position[1]
@@ -87,16 +81,14 @@ class GridElement:
     def set_color(self, color):
         self.color = color
 
-    """
-    Draw the GridElement
-    """
-
     def draw_grid_element(self, surface):
         draw.rect(surface, self.color,
                   (self.position[0] * self.size[0], self.position[1] * self.size[1], self.size[0], self.size[1]), 0)
 
         # discard the directions where neighbours are
-        compass = [(0, -1), (1, 0), (0, 1), (-1, 0)]  # The four directions
+        compass = [(0, -1), (1, 0), (0, 1), (-1, 0)]
+
+        # The four directions
         for neighbour in self.neighbours:
             if self.direction(neighbour) in compass:
                 compass.remove(self.direction(neighbour))

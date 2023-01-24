@@ -3,6 +3,11 @@ from pygame import image
 
 
 class Player(Agent):
+    """
+    Subclass of the agent
+    Represents the raven, controlled by the player;
+    The player moves according to the angle computed by the camera
+    """
 
     def __init__(self, x, y, size):
         super().__init__(x, y, size)
@@ -11,6 +16,10 @@ class Player(Agent):
             self.sprites.append(image.load(f"helpers/Images/bird_{i+1}.png"))
         self.sprite_animation_speed = 4
 
+
+    """
+    Passes the direction variable of the camera and turns the player towards it
+    """
     def move(self, direction):
         if direction == 0:
             self.position_y = self.position_y - 1

@@ -2,6 +2,9 @@ from pygame import image, time, mixer
 
 
 class UI:
+    """
+    class for user interface, which displays win and lose messages, when it is the case
+    """
 
     def __init__(self):
         self.pentagram = image.load("helpers/Images/8-bit_pentagram.png")
@@ -23,8 +26,8 @@ class UI:
         self.background_song.set_volume(0.4)
         self.background_song.play(10)
 
-        self.counter = 0
-        self.counter_2 = 0
+        self.counter = 0  # help with the animation
+        self.counter_2 = 0  # help with the animation
         self.win_animation_speed = 3
         self.lose_animation_speed = 3
         self.end_game = False
@@ -32,20 +35,26 @@ class UI:
     def render_game_over(self, surface, x, y, condition):
         if condition:
             self.counter += 1
-            if self.counter >= len(self.scratch_images) * self.win_animation_speed:
+
+            # cycles through the array of scratch images
+            if self.counter >= len(self.scratch_images) * self.lose_animation_speed:
                 self.counter = 0
-            surface.blit(self.scratch_images[self.counter // self.win_animation_speed],
+            surface.blit(self.scratch_images[self.counter // self.lose_animation_speed],
                          (x, y))
             surface.blit(self.messages[0], (x + 150, y + 500))
             self.counter_2 += 1
             if self.counter_2 > self.win_animation_speed * 2:
+
+                # after a certain threshold the animation stops and the program exits
                 self.background_song.stop()
                 self.meow.play()
-                time.delay(2000)
+                time.delay(2000) # adds a delay before exiting the game
                 self.end_game = True
 
     def render_you_win(self, surface, x, y, condition):
         if condition:
+
+            # first displays pentagram for a short period of time, then the dead cat image and the message
             self.counter += 1
             self.counter_2 += 1
             if self.counter <= 10:
@@ -56,7 +65,6 @@ class UI:
                 surface.blit(self.messages[1], (x + 140, y + 350))
 
             if self.counter_2 > 12:
-
                 self.lose_sound.play()
                 time.delay(2000)
                 self.end_game = True

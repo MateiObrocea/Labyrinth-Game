@@ -88,9 +88,6 @@ class CameraDetection:
         (color1_x, color1_y), found_color1 = self.find_color1(copy_frame)
         (color2_x, color2_y), found_color2 = self.find_color2(copy_frame)
 
-        # draw circles around these objects
-        # cv2.circle(copy_frame, (color1_x, color1_y), 20, (255, 0, 0), -1)
-        # cv2.circle(copy_frame, (color2_x, color2_y), 20, (0, 128, 255), -1)
 
         if found_color2 and found_color1:
             # trig stuff to get the line
@@ -107,51 +104,27 @@ class CameraDetection:
                     cv2.line(copy_frame, (color1_x, color1_y), (color2_x, color1_y), (0, 0, 255), 2)
                     cv2.line(copy_frame, (color2_x, color2_y), (color2_x, color1_y), (0, 0, 255), 2)
 
-                    # put angle text (allow for calculations upto 180 degrees)
-                    angle_text = ""
                     angle_final = 0
 
                     if isinstance(angle, float) and angle < 360:
                         if color2_y < color1_y and color2_x > color1_x:
                             angle_final = int(angle)
-                            angle_text = str(int(angle))
                         elif color2_y < color1_y and color2_x < color1_x:
                             angle_final = int(180 - angle)
-                            angle_text = str(int(180 - angle))
                         elif color2_y > color1_y and color2_x < color1_x:
                             angle_final = int(180 + angle)
-                            angle_text = str(int(180 + angle))
                         elif color2_y > color1_y and color2_x > color1_x:
                             angle_final = int(360 - angle)
-                            angle_text = str(int(360 - angle))
-                        # except:
-                        #     print("conversion error"
+
                     if 45 < angle_final < 135:
-                        print("North")
                         self.direction = 0
                     elif 135 < angle_final < 225:
-                        print("East")
                         self.direction = 1
                     elif 225 < angle_final < 315:
-                        print("South")
                         self.direction = 2
                     else:
-                        print("West")
                         self.direction = 3
-
-                    # print(self.direction)
-
-                    # CHANGE FONT HERE
-                    cv2.putText(copy_frame, angle_text, (color1_x - 30, color1_y), cv2.FONT_HERSHEY_COMPLEX, 1,
-                                (0, 128, 229), 2)
         else:
             self.direction = 10
-
-        # cv2.imshow('mat', copy_frame)
         cv2.waitKey(5)
 
-        # while (1):
-        #     self.perform()
-
-    # cap.release()
-    # cv2.destroyAllWindows()

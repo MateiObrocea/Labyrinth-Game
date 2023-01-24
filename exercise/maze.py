@@ -4,10 +4,9 @@ from exercise.grid_element import GridElement
 
 class Maze:
     """
-        Generates a grid based maze based on GridElements
-        This class also contains search algorithms for
-        depth first, breath first, greedy and A* star search to
-        solve the generated mazes
+        Generates a grid based maze
+        Manages the GreedElements class
+        Sets the legal paths of the game
         """
 
     def __init__(self, grid_size_x, grid_size_y, screen_size):
@@ -108,7 +107,7 @@ class Maze:
                     self.del_link(self.grid[m][n + y], self.grid[m - 1][n + y])
                     self.del_link(self.grid[m + max_x][n + y], self.grid[m + +max_x - 1][n + y])
 
-        # add a few random links
+        # add a few random gaps
         for i in range(max(self.grid_size)):
             random_row = random.choice(self.grid)
             random_element = random.choice(random_row)
@@ -120,7 +119,7 @@ class Maze:
                 random_neighbor = random.choice(possible)
                 self.add_link(random_element, random_neighbor)
 
-        # vertical blocks
+        # vertical roadblocks
         block_x = random.choice(range(5, self.grid_size[0], 5))
         self.del_link(self.grid[block_x][0], self.grid[block_x - 1][0])
         for m in range(4, self.grid_size[1] - 2, 5):
@@ -130,7 +129,7 @@ class Maze:
         block_x = random.choice(range(3, self.grid_size[0], 5))
         self.del_link(self.grid[block_x][self.grid_size[1] - 1], self.grid[block_x - 1][self.grid_size[1] - 1])
 
-        # horizontal blocks
+        # horizontal roadblocks
         block_y = random.choice(range(3, self.grid_size[1], 5))
         self.del_link(self.grid[0][block_y], self.grid[0][block_y - 1])
         for n in range(4, self.grid_size[0] - 2, 5):
