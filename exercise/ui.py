@@ -1,4 +1,4 @@
-from pygame import image, time
+from pygame import image, time, mixer
 
 
 class UI:
@@ -15,6 +15,16 @@ class UI:
         self.counter_2 = 0
         self.win_animation_speed = 3
         self.lose_animation_speed = 3
+
+        self.meow = mixer.Sound("helpers/Audio/angry_meow.mp3")
+        self.meow.set_volume(0.5)
+
+        self.lose_sound = mixer.Sound("helpers/Audio/lose_sound.mp3")
+        self.lose_sound.set_volume(0.5)
+
+        self.cat_song = mixer.Sound("helpers/Audio/cat_song.mp3")
+        self.cat_song.set_volume(0.4)
+        self.cat_song.play(10)
         self.end_game = False
 
     def render_game_over(self, surface, x, y, condition):
@@ -27,6 +37,8 @@ class UI:
             surface.blit(self.messages[0], (x + 150, y + 500))
             self.counter_2 += 1
             if self.counter_2 > self.win_animation_speed * 2:
+                self.cat_song.stop()
+                self.meow.play()
                 time.delay(2000)
                 self.end_game = True
 
@@ -34,18 +46,17 @@ class UI:
         if condition:
             self.counter += 1
             self.counter_2 += 1
-            if self.counter <= 20:
+            if self.counter <= 10:
+                self.cat_song.stop()
                 surface.blit(self.pentagram, (x, y))
             else:
                 surface.blit(self.dead_cat, (x - 50, y - 150))
                 surface.blit(self.messages[1], (x + 140, y + 350))
 
-            if self.counter_2 > 25:
+            if self.counter_2 > 12:
+
+                self.lose_sound.play()
                 time.delay(2000)
                 self.end_game = True
 
-    # def render_start_game(self, surface, x, y):
-    #     time.delay(2000)
-    #     surface.blit(self.pentagram, (x, y))
-    #     pass
 

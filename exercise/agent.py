@@ -47,8 +47,4 @@ class Agent:
 
 
     def move(self, direction):
-
-        """
-         directions are coded as 0,1,2,3 for the directions North, East, South, West
-         """
         pass

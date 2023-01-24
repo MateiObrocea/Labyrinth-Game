@@ -119,13 +119,6 @@ class Game:
             self.player.move(2)
         if self.camera.direction == 3 and self.player.position_x > 0:
             self.player.move(3)
-        # possible_directions = [0, 1, 2, 3]
-        # for i in range(4):
-        #     # print(i)
-        #     if self.camera.direction == i and 0 < self.player.position_x < Constants.GRID_COLS - 1:
-        #         if 0 < self.player.position_y < Constants.GRID_ROWS - 1:
-        #             self.player.move(i)
-        # #
 
     """
     Method 'draw_components' is similar is meant to contain 
@@ -133,14 +126,6 @@ class Game:
     void draw() in Processing. Put all draw calls here. Leave all
     updates in method 'update'
     """
-
-    # def move_target(self):
-    #     # moves the target towards the player
-    #     path = self.search.get_path()
-    #     if path:
-    #         for node in path:
-    #             self.player_x = node[0]
-    #             self.player_y = node[1]
 
     def draw_components(self):
         self.screen.fill([255, 255, 255])
@@ -154,7 +139,6 @@ class Game:
 
         self.user_interface.render_you_win(self.screen, 150, 170, self.stars_collected())
         self.user_interface.render_game_over(self.screen, 150, 50, self.chaser.search.get_caught_condition)
-        # self.user_interface.render_start_game(self.screen, 0, 0)
         pygame.display.flip()
 
 
@@ -191,26 +175,12 @@ class Game:
     def handle_key_down(self, event):
 
         self.keyboard_handler.key_pressed(event.key)
-        # if event.key == pygame.K_m:oo
-        #     print("Generating Maze")
-        #     self.maze.generate_maze()
+
         if event.key == pygame.K_o:
             print("Generating Obstacle")
             self.maze.generate_obstacles()
-        # if event.key == pygame.K_r:
-        #     print("Generating Rooms")
-        #     self.maze.generate_room()
-        # if event.key == pygame.K_b:
-        #     print("BFS")
-        #     self.search.breadth_first_solution()
-        # if event.key == pygame.K_d:
-        #     print("DFS")
-        #     self.search.depth_first_solution()
-        # if event.key == pygame.K_g:
-        #     print("Greedy")
-        #     self.search.greedy_search()
 
-        # player control
+        # player control - debugging purposes
         if event.key == pygame.K_UP and self.player.position_y > 0:
             # self.target_y = self.target_y - 1
             self.player.move(0)
@@ -242,13 +212,8 @@ class Game:
     """
     Similar to void mousePressed() in Processing
     """
-    # def handle_mouse_pressed(self, event):
-    #     x = int(event.pos[0] / self.maze.cell_width)
-    #     y = int(event.pos[1] / self.maze.cell_height)
-    #     if event.button == 1:
-    #         self.maze.set_source(self.maze.grid[x][y])
-    #     if event.button == 3:
-    #         self.maze.set_target(self.maze.grid[x][y])
+    def handle_mouse_pressed(self, event):
+        pass
 
     """
     Similar to void mouseReleased() in Processing
@@ -270,8 +235,3 @@ if __name__ == "__main__":
 
 
 
-
-
-        # pygame.draw.rect(pygame.display.set_mode([800, 800]), (0, 255, 255),
-        #                  [10, 10, 2, 2])
-        # pygame.display.update()
