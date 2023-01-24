@@ -29,7 +29,7 @@ class Agent:
         if self.counter >= len(self.sprites) * self.sprite_animation_speed:
             self.counter = 0
         sprite = pygame.transform.scale(self.sprites[self.counter // self.sprite_animation_speed], (50, 50))
-        sprite = pygame.transform.rotate(sprite, self.angle) # rotates according to the direction of the movement
+        sprite = pygame.transform.rotate(sprite, self.angle)  # rotates according to the direction of the movement
         surface.blit(sprite, (self.position_x * self.size[0],  self.position_y * self.size[1]))
 
     """
@@ -44,6 +44,7 @@ class Agent:
             return 90
         if self.previous_y < self.position_y:
             self.previous_y = self.position_y
+            return 180
         if self.previous_y > self.position_y:
             self.previous_y = self.position_y
             return 0
