@@ -3,7 +3,6 @@ import sys
 from exercise.helpers.keyboard_handler import KeyboardHandler
 from exercise.maze import Maze
 from exercise.helpers.constants import Constants
-# from exercise.search import Search
 from CameraDetection import CameraDetection
 from player import Player
 from enemy import Enemy
@@ -19,6 +18,7 @@ class Game:
     def __init__(self):
         pygame.init()
         self.size = (Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT)
+        self.screen = pygame.display.set_mode(self.size)
         self.maze = Maze(Constants.GRID_COLS, Constants.GRID_ROWS, self.size)
         self.player = Player(12, 12, (Constants.CELL_SIZE, Constants.CELL_SIZE))
         self.chaser = Enemy(0, 0, (Constants.CELL_SIZE, Constants.CELL_SIZE), self.maze)
@@ -30,18 +30,12 @@ class Game:
         self.star_list.append(Star(5, 3, (Constants.CELL_SIZE, Constants.CELL_SIZE)))
         self.star_list.append(Star(11, 3, (Constants.CELL_SIZE, Constants.CELL_SIZE)))
 
-        self.screen = pygame.display.set_mode(self.size)
         self.keyboard_handler = KeyboardHandler()
-        self.font = pygame.font.SysFont(pygame.font.get_fonts()[0], 64)
         self.time = pygame.time.get_ticks()
+        self.time_player = pygame.time.get_ticks()
         self.last_move_time = pygame.time.get_ticks()
 
         self.maze.generate_obstacles()
-        # self.search = Search(self.maze)
-        # self.player_x = 0
-        # self.player_y = 0
-        # self.target_x = 12
-        # self.target_y = 12
 
         self.user_interface = UI()
         self.camera = CameraDetection()
@@ -54,6 +48,10 @@ class Game:
     """
 
     def game_exit(self):
+        if self.user_interface.end_game:
+            return True
+
+    def stars_collected(self):
         for i in range(5):
             if not self.star_list[i].is_collected:
                 return False
@@ -68,11 +66,8 @@ class Game:
         self.update_game(Constants.PLAYER_SPEED, Constants.ENEMY_SPEED)
         self.draw_components()
         self.maze.set_target(self.maze.grid[self.player.position_x][self.player.position_y])
-        # self.maze.set_target(self.maze.grid[self.player_x//self.player.size[0]][self.player_y//self.player.size[1]])
         self.maze.set_source(self.maze.grid[self.chaser.position_x][self.chaser.position_y])
-        # self.search.a_star_search()
-        # print(self.last_move_time)
-        self.user_interface.spawn(self.screen, 170, 150, 3000, self.game_exit())
+        # self.user_interface.spawn(self.screen, 170, 150, 3000, self.game_exit())
         self.camera.perform()
 
         for star in self.star_list:
@@ -107,8 +102,12 @@ class Game:
         if current_time - self.time > enemy_speed:  # current time - self time
             # self.move_target()
             self.chaser.move(self.camera.direction)
-            self.move_player()
             self.time = current_time
+
+        if current_time - self.time_player > player_speed:  # current time - self time
+            # self.move_target()
+            self.move_player()
+            self.time_player = current_time
 
 
     def move_player(self):
@@ -153,12 +152,11 @@ class Game:
         self.player.draw_sprite(self.screen)
         self.chaser.draw_sprite(self.screen)
 
-        self.user_interface.render_end(self.screen, 170, 150, self.game_exit())
+        self.user_interface.render_you_win(self.screen, 150, 170, self.stars_collected())
+        self.user_interface.render_game_over(self.screen, 150, 50, self.chaser.search.get_caught_condition)
+        # self.user_interface.render_start_game(self.screen, 0, 0)
         pygame.display.flip()
 
-    # def draw_score(self):
-    #     text = self.font.render(str(self.maze.target.distance), True, (0, 0, 0))
-    #     self.screen.blit(text, (self.size[0] / 2 - 64, 20))
 
     def reset(self):
         pass
@@ -265,9 +263,11 @@ gameExit = False
 if __name__ == "__main__":
     game = Game()
     while not gameExit:
-        if game.game_exit():
-            gameExit = True
         game.game_loop()
+        if game.game_exit():
+            # pygame.time.delay(1000)
+            gameExit = True
+
 
 
 

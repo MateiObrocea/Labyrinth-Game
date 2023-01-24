@@ -21,14 +21,14 @@ class GridElement:
         self.distance = None
         self.score = None
         self.color = (255, 255, 0)
-        self.init_color = (uniform(50, 100), uniform(200, 255), 0)
+        self.init_color = (uniform(25, 100), uniform(135, 205), 0)
 
     """
     Overload the equals operator
     """
 
-    def __eq__(self, other):
-        return self.position == other.position
+    # # def __eq__(self, other):
+    # #     return self.position == other.position
     """
     Overload the less than operator
     """

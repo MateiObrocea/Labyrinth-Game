@@ -13,6 +13,7 @@ class Search:
 
     def __init__(self, graph):
         self.graph = graph
+        self.get_caught_condition = False
     # def breadth_first_solution(self):
     #
     #     self.graph.reset_state()
@@ -113,8 +114,12 @@ class Search:
             else:
                 break
         # print("The number of visited nodes is: {}".format(len(visited)))
-        self.highlight_path()
-        # return self.get_path()
+
+        if len(visited) <= 1:
+            self.get_caught_condition = True
+            # print(self.get_caught_condition)
+
+        # self.highlight_path()
 
     def highlight_path(self):
         # Compute the path, back to front.

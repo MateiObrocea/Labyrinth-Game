@@ -10,8 +10,8 @@ class Enemy(Agent):
         self.search = Search(maze)
         self.sprites = []
         for i in range(4):
-            self.sprites.append(image.load(f"helpers/Images/bird_{i+1}.png"))
-        self.sprite_animation_speed = 4
+            self.sprites.append(image.load(f"helpers/Images/kot_{i+1}.png"))
+        self.sprite_animation_speed = 1000
 
     def move(self, direction):
         # print("move is called")
@@ -28,9 +28,12 @@ class Enemy(Agent):
         # self.seek_player()
         path = self.search.get_path()
         if path:
+            self.sprite_animation_speed = 6
             for node in path:
                 self.position_x = node[0]
                 self.position_y = node[1]
+        else:
+            self.sprite_animation_speed = 1000
 
     def seek_player(self):
         self.search.a_star_search()
