@@ -25,8 +25,8 @@ class CameraDetection:
         Determines the approximated outline and position of the first color
         """
         hsv_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
-        hsv_lowerbound = np.array([0, 120, 120])
-        hsv_upperbound = np.array([40, 255, 255])
+        hsv_lowerbound = np.array([40, 40, 40])
+        hsv_upperbound = np.array([80, 255, 255])  # green color bounds
         mask = cv2.inRange(hsv_frame, hsv_lowerbound, hsv_upperbound)
         res = cv2.bitwise_and(frame, frame, mask=mask)  # filter inplace
         cnts, hir = cv2.findContours(mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
@@ -51,8 +51,8 @@ class CameraDetection:
         Determines the approximated outline and position of the first color
         """
         hsv_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
-        hsv_lowerbound = np.array([90, 80, 120])
-        hsv_upperbound = np.array([125, 255, 255])
+        hsv_lowerbound = np.array([90, 60, 80])
+        hsv_upperbound = np.array([125, 255, 255])  # blue color bounds
         mask = cv2.inRange(hsv_frame, hsv_lowerbound, hsv_upperbound)
         res = cv2.bitwise_and(frame, frame, mask=mask)
         cnts, hir = cv2.findContours(mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
