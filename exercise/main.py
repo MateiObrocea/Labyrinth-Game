@@ -99,7 +99,7 @@ class Game:
         self.chaser.seek_player()
 
         """
-        updates the state of the agents at a certain rate
+        updates the state of the agents at a certain rat+e
         Similar to millis() manipulation in Arduino
         """
         if current_time - self.time > enemy_speed:

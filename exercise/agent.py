@@ -44,7 +44,6 @@ class Agent:
             return 90
         if self.previous_y < self.position_y:
             self.previous_y = self.position_y
-            return 180
         if self.previous_y > self.position_y:
             self.previous_y = self.position_y
             return 0
